@@ -115,6 +115,18 @@ const STRENGTH_EXPLAIN = {
   insufficient: 'little or nothing here was verifiably grounded',
 }
 
+const KIND_LABEL = {
+  ai: 'AI call · LLM',
+  jev: 'AI decision · Jev',
+  code: 'Plain code, no AI',
+}
+
+const KIND_ICON_BG = {
+  ai: 'bg-teal-100',
+  jev: 'bg-indigo-100',
+  code: 'bg-slate-100',
+}
+
 // ---- one row in the "AI step" timeline -----------------------------------
 
 function StepRow({ icon, kind, title, active, done, children }) {
@@ -124,14 +136,14 @@ function StepRow({ icon, kind, title, active, done, children }) {
     } ${!active && !done ? 'opacity-40' : ''}`}>
       <div className="flex items-center gap-3">
         <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-base ${
-          kind === 'ai' ? 'bg-teal-100' : 'bg-slate-100'
+          KIND_ICON_BG[kind]
         }`}>
           {icon}
         </span>
         <div className="flex-1">
           <p className="text-sm font-semibold text-slate-800">{title}</p>
           <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
-            {kind === 'ai' ? 'AI call' : 'Plain code, no AI'}
+            {KIND_LABEL[kind]}
           </p>
         </div>
         {active && (
@@ -157,6 +169,51 @@ function QuoteBubble({ item }) {
   )
 }
 
+function RatingBars({ name, rating }) {
+  return (
+    <div>
+      <div className="mb-1 flex items-baseline justify-between text-xs">
+        <span className="font-semibold capitalize text-slate-700">{name}</span>
+        <span className="text-slate-400">
+          weighted {rating.value}/5 · confidence {Math.round(rating.confidence * 100)}%
+        </span>
+      </div>
+      <div className="space-y-1">
+        {Object.entries(rating.probabilities).map(([level, p]) => (
+          <div key={level} className="flex items-center gap-2 text-[11px]">
+            <span className="w-3 text-right font-mono text-slate-400">{level}</span>
+            <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
+              <div className="h-full rounded-full bg-indigo-500" style={{ width: `${p * 100}%` }} />
+            </div>
+            <span className="w-9 text-right font-mono text-slate-500">{Math.round(p * 100)}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function JevJudgment({ judge, summary }) {
+  return (
+    <div className="space-y-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <RatingBars name="severity" rating={judge.severity} />
+        <RatingBars name="likelihood" rating={judge.likelihood} />
+      </div>
+      {judge.uncertain && (
+        <p className="rounded-md bg-amber-50 px-2.5 py-1.5 text-xs text-amber-700">
+          Low confidence: the probability is spread over several levels, so a person should check this rating.
+        </p>
+      )}
+      <p className="text-sm text-slate-600">{summary}</p>
+      <p className="text-[11px] text-slate-400">
+        Jev returns a probability for every level instead of writing an answer, so you can see how
+        sure it is. Decided in {judge.latency_ms} ms by {judge.model}.
+      </p>
+    </div>
+  )
+}
+
 function ScoreExplained({ score }) {
   return (
     <div className="space-y-3">
@@ -177,7 +234,7 @@ function ScoreExplained({ score }) {
       <div className="grid grid-cols-1 gap-2 rounded-lg bg-slate-50 p-3 text-[12px] text-slate-500 sm:grid-cols-3">
         <div>
           <p className="font-semibold text-slate-700">Severity — {score.severity}/5</p>
-          <p>How bad this would be if it&rsquo;s true. The AI rates this; it never invents the final label.</p>
+          <p>How bad this would be if it&rsquo;s true. The AI rates this on a 1&ndash;5 scale; it never invents the final label.</p>
         </div>
         <div>
           <p className="font-semibold text-slate-700">Likelihood — {score.likelihood}/5</p>
@@ -211,6 +268,8 @@ export default function App() {
   const [phase, setPhase] = useState(null) // searching | checking | assessing | scoring | done
   const [quotes, setQuotes] = useState([])
   const [summary, setSummary] = useState(null)
+  const [judge, setJudge] = useState(null) // 'jev' | 'llm'
+  const [judgeDetail, setJudgeDetail] = useState(null)
   const [score, setScore] = useState(null)
 
   const onDrop = useCallback((accepted) => {
@@ -242,6 +301,8 @@ export default function App() {
     setPhase(null)
     setQuotes([])
     setSummary(null)
+    setJudge(null)
+    setJudgeDetail(null)
     setScore(null)
     setError(null)
   }
@@ -271,9 +332,11 @@ export default function App() {
             break
           case 'assessing':
             setPhase('assessing')
+            setJudge(event.judge)
             break
           case 'assessed':
             setSummary(event.summary)
+            setJudgeDetail(event.judge)
             break
           case 'scoring':
             setPhase('scoring')
@@ -304,7 +367,8 @@ export default function App() {
           <h1 className="text-xl font-semibold text-slate-900">ARGUS-Lite</h1>
           <p className="mt-1 text-sm text-slate-500">
             Watch an AI agent find evidence in a document, verify it&rsquo;s real, and
-            compute a score by formula — not by just asking it for an answer.
+            compute a score by formula — not by just asking it for an answer. An LLM finds
+            the quotes; Jev, a decision model, rates them with a probability for every level.
           </p>
         </div>
       </header>
@@ -417,12 +481,20 @@ export default function App() {
 
             <StepRow
               icon="🧠"
-              kind="ai"
-              title="Agent judges severity & likelihood from verified evidence only"
+              kind={judge === 'llm' ? 'ai' : 'jev'}
+              title={
+                judge === 'llm'
+                  ? 'Agent judges severity & likelihood from verified evidence only'
+                  : 'Jev rates severity & likelihood from verified evidence only'
+              }
               active={phase === 'assessing'}
               done={currentIndex > 2}
             >
-              {summary && <p className="text-sm text-slate-600">{summary}</p>}
+              {judgeDetail ? (
+                <JevJudgment judge={judgeDetail} summary={summary} />
+              ) : (
+                summary && <p className="text-sm text-slate-600">{summary}</p>
+              )}
             </StepRow>
 
             <StepRow
