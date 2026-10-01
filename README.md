@@ -1,11 +1,13 @@
-# ARGUS-Lite
+# Proofline
 
 **Live at [argusv1.manarattar.com](https://argusv1.manarattar.com)**
 
-Watch an AI agent find evidence in a document, verify it's real, and compute a
-risk score by formula — the two ideas from ARGUS that actually matter, with
-everything else cut away. No finance background needed: the example is a
-phone warranty ("does this cover water damage?").
+Proofline is a simplified, interactive companion to ARGUS, the full system at
+https://argus.manarattar.com. Watch an AI agent find evidence in a document,
+verify it's real, and compute a risk score by formula — the two ideas from
+ARGUS that actually matter, with everything else cut away. No finance
+background needed: the example is a phone warranty ("does this cover water
+damage?").
 
 ## The two ideas
 
@@ -65,7 +67,7 @@ npm run dev
 **Or from the command line, no frontend needed:**
 ```bash
 cd backend
-python -m app.argus_lite sample_report.txt "Does the warranty cover water damage?"
+python -m app.proofline sample_report.txt "Does the warranty cover water damage?"
 ```
 
 ## Deploying

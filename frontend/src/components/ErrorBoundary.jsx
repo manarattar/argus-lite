@@ -12,7 +12,7 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, info) {
-    console.error('ARGUS-Lite crashed:', error, info?.componentStack)
+    console.error('Proofline crashed:', error, info?.componentStack)
   }
 
   render() {

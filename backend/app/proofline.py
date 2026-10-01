@@ -1,5 +1,5 @@
 """
-ARGUS-Lite: the two ideas from ARGUS that actually matter, with everything else cut away.
+Proofline: the two ideas from ARGUS that actually matter, with everything else cut away.
 
 Task 1 - Find evidence, verify it's real:
     An LLM pulls quotes relevant to a risk question out of a document. Plain code
@@ -20,7 +20,7 @@ Without a TYPESAFE_API_KEY the ratings fall back to the LLM.
 Run:
     export OPENAI_API_KEY=sk-...
     export TYPESAFE_API_KEY=apikey_...
-    python -m app.argus_lite sample_report.txt "financial risk"
+    python -m app.proofline sample_report.txt "financial risk"
 """
 
 import difflib
@@ -367,6 +367,6 @@ def run(document_path: str, risk_question: str) -> None:
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print('Usage: python argus_lite.py <document.txt> "<risk question>"')
+        print('Usage: python -m app.proofline <document.txt> "<risk question>"')
         sys.exit(1)
     run(sys.argv[1], sys.argv[2])

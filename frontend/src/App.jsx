@@ -5,13 +5,13 @@ import { EXAMPLES } from './examples'
 import Onboarding, { hasSeenTour } from './components/Onboarding'
 import ThemeToggle from "./components/ThemeToggle.jsx";
 
-const LANDING_TOUR = 'argus-lite.onboarded.v1'
-const RESULTS_TOUR = 'argus-lite.results-tour.v1'
+const LANDING_TOUR = 'proofline.onboarded.v1'
+const RESULTS_TOUR = 'proofline.results-tour.v1'
 
 const LANDING_STEPS = [
   {
     target: null,
-    title: 'Why this is not just “ask the AI”',
+    title: 'Welcome to Proofline',
     body: (
       <>
         <p>
@@ -371,7 +371,7 @@ export default function App() {
       <header className="border-b border-rule bg-sheet">
         <div className="mx-auto flex max-w-6xl items-start justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
           <div>
-            <h1 className="text-[20px] font-bold leading-none text-ink">ARGUS-Lite</h1>
+            <h1 className="text-[20px] font-bold leading-none text-ink">Proofline</h1>
             <p className="mt-1.5 hidden max-w-[62ch] text-[14px] leading-snug text-ink-2 sm:block">
               An AI agent finds evidence in a document, code checks it is real, and a formula, not the
               model, produces the score.

@@ -1,13 +1,13 @@
 import json
 
-from app.argus_lite import analyze_stream
+from app.proofline import analyze_stream
 from app.extract_text import extract_text
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
 app = FastAPI(
-    title="ARGUS-Lite API",
+    title="Proofline API",
     description="Two ideas from ARGUS: verify evidence is grounded, score by formula, not by asking",
     version="1.0.0",
 )
