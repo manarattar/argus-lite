@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone'
 import { analyzeStream } from './api'
 import { EXAMPLES } from './examples'
 import Onboarding, { hasSeenTour } from './components/Onboarding'
+import ThemeToggle from "./components/ThemeToggle.jsx";
 
 const LANDING_TOUR = 'argus-lite.onboarded.v1'
 const RESULTS_TOUR = 'argus-lite.results-tour.v1'
@@ -376,12 +377,15 @@ export default function App() {
               model, produces the score.
             </p>
           </div>
+          <div className="flex shrink-0 items-center gap-2">
+          <ThemeToggle />
           <button
             onClick={() => setTour('landing')}
             className="shrink-0 rounded-[4px] border border-rule px-3 py-1.5 text-[13px] font-bold text-ink hover:border-ink-3"
           >
             How it works
           </button>
+          </div>
         </div>
       </header>
 

@@ -30,32 +30,7 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --desk: #0e141e;
-    --sheet: #171f2d;
-    --ink: #e8ecf4;
-    --ink-2: #adb8cc;
-    --ink-3: #7f8ba2;
-    --rule: #2a3547;
-    --hi-bg: #5c4f0c;
-    --hi-fg: #fff0b0;
-    --jev: #8fa2f0;
-    --jev-soft: #1f2748;
-    --llm: #62c4bc;
-    --llm-soft: #14302f;
-    --code: #aab4c6;
-    --code-soft: #222c3c;
-    --ok: #76c595;
-    --ok-soft: #162b1f;
-    --bad: #f08a80;
-    --bad-soft: #36201f;
-    --warn: #e5a94a;
-    --warn-soft: #33270e;
-    --scrim: rgba(0, 0, 0, 0.66);
-    color-scheme: dark;
-  }
-}
+
 
 :root[data-theme="dark"] {
   --desk: #0e141e;
