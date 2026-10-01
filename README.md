@@ -1,6 +1,6 @@
 # Proofline
 
-**Live at [argusv1.manarattar.com](https://argusv1.manarattar.com)**
+**Live at [proofline.manarattar.com](https://proofline.manarattar.com)**
 
 Proofline is a simplified, interactive companion to ARGUS, the full system at
 https://argus.manarattar.com. Watch an AI agent find evidence in a document,
@@ -74,7 +74,7 @@ python -m app.proofline sample_report.txt "Does the warranty cover water damage?
 
 Same pattern as the other apps on the Contabo stack: backend runs as a Docker
 service (`argusv1`) behind Caddy, frontend is a static build served from
-`/srv/www/argusv1`. DNS is on Vercel (`vercel dns add manarattar.com argusv1 A
+`/srv/www/argusv1`. DNS is on Vercel (`vercel dns add manarattar.com proofline A
 194.163.176.183`), same as every other `*.manarattar.com` subdomain.
 
 ## What's deliberately left out
