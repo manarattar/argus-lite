@@ -1,1 +1,213 @@
 @import "tailwindcss";
+
+/*
+ * "Evidence board": a case file. Cool grey desk, white sheets, navy ink, and a
+ * highlighter-yellow mark for every quote that checked out against the source.
+ * Quotes that did not are struck through, the way a reviewer discards them.
+ */
+:root {
+  --desk: #eceff4;
+  --sheet: #ffffff;
+  --ink: #15233c;
+  --ink-2: #47536b;
+  --ink-3: #76819a;
+  --rule: #d6dbe5;
+  --hi-bg: #ffec8a;
+  --hi-fg: #15233c;
+  --jev: #3347a8;
+  --jev-soft: #e8ebf9;
+  --llm: #0d6a6a;
+  --llm-soft: #def0ee;
+  --code: #4b5668;
+  --code-soft: #eaedf2;
+  --ok: #2c7048;
+  --ok-soft: #e4f0e8;
+  --bad: #b3261e;
+  --bad-soft: #fbeae8;
+  --warn: #8f5a00;
+  --warn-soft: #fbf0d6;
+  --scrim: rgba(14, 22, 38, 0.58);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --desk: #0e141e;
+    --sheet: #171f2d;
+    --ink: #e8ecf4;
+    --ink-2: #adb8cc;
+    --ink-3: #7f8ba2;
+    --rule: #2a3547;
+    --hi-bg: #5c4f0c;
+    --hi-fg: #fff0b0;
+    --jev: #8fa2f0;
+    --jev-soft: #1f2748;
+    --llm: #62c4bc;
+    --llm-soft: #14302f;
+    --code: #aab4c6;
+    --code-soft: #222c3c;
+    --ok: #76c595;
+    --ok-soft: #162b1f;
+    --bad: #f08a80;
+    --bad-soft: #36201f;
+    --warn: #e5a94a;
+    --warn-soft: #33270e;
+    --scrim: rgba(0, 0, 0, 0.66);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --desk: #0e141e;
+  --sheet: #171f2d;
+  --ink: #e8ecf4;
+  --ink-2: #adb8cc;
+  --ink-3: #7f8ba2;
+  --rule: #2a3547;
+  --hi-bg: #5c4f0c;
+  --hi-fg: #fff0b0;
+  --jev: #8fa2f0;
+  --jev-soft: #1f2748;
+  --llm: #62c4bc;
+  --llm-soft: #14302f;
+  --code: #aab4c6;
+  --code-soft: #222c3c;
+  --ok: #76c595;
+  --ok-soft: #162b1f;
+  --bad: #f08a80;
+  --bad-soft: #36201f;
+  --warn: #e5a94a;
+  --warn-soft: #33270e;
+  --scrim: rgba(0, 0, 0, 0.66);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-desk: var(--desk);
+  --color-sheet: var(--sheet);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-jev: var(--jev);
+  --color-jev-soft: var(--jev-soft);
+  --color-llm: var(--llm);
+  --color-llm-soft: var(--llm-soft);
+  --color-code: var(--code);
+  --color-code-soft: var(--code-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --font-sans: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--desk);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* A quote that checked out: highlighter over the words, as if marked on the page */
+.hi {
+  background: var(--hi-bg);
+  color: var(--hi-fg);
+  padding: 1px 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+:focus-visible {
+  outline: 2px solid var(--jev);
+  outline-offset: 2px;
+}
+
+:root {
+  --tour-surface: var(--sheet);
+  --tour-ink: var(--ink);
+  --tour-body: var(--ink-2);
+  --tour-muted: var(--ink-3);
+  --tour-rule: var(--rule);
+  --tour-scrim: var(--scrim);
+  --tour-accent: var(--ink);
+  --tour-on-accent: var(--sheet);
+  --tour-radius: 6px;
+}
+
+.crash {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: var(--desk);
+  font-family: var(--font-sans);
+}
+.crash-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 24px;
+  color: var(--ink);
+}
+.crash-card h1 { margin: 0; font-size: 22px; }
+.crash-card p { margin: 8px 0 0; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+.crash-card .crash-detail {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: var(--desk);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-3);
+  overflow-wrap: anywhere;
+}
+.crash-card button {
+  margin-top: 16px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--sheet);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@keyframes sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(260%); }
+}
+.sweep { animation: sweep 1.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .sweep { animation: none; }
+}
